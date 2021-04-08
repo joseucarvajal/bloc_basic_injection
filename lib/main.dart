@@ -13,23 +13,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var _appRouter;
+  final MyRepository myRepository = MyRepository();
+
+  AppRouter _appRouter;
 
   @override
   void initState() {
     super.initState();
-    _appRouter = new AppRouter(context.read<MyRepository>());
+    _appRouter = AppRouter(myRepository);
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(
-          create: (context) {
-            return MyRepository();
-          },
-        ),
+        RepositoryProvider.value(value: myRepository),
       ],
       child: MaterialApp(
         onGenerateRoute: _appRouter.onGenerateRoute,
